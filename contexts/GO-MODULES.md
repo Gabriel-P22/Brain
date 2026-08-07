@@ -87,82 +87,82 @@ Ordem pensada pro cargo de backend: fundamentos → boas práticas de engenharia
 ## Módulo 3: Backend em Go
 
 ### Tópico: net/http e APIs REST
-- Status: [ ]
+- Status: [x]
 - Dia do plano: 8
 - Conteúdo: `net/http`, API REST via stdlib.
-- Contexto/notas: —
+- Contexto/notas: Coberto — README em `go/net-http-e-apis-rest/`: `ServeMux` 1.22+ com método+wildcard (dispensa router de terceiro pra caso simples), ordem de `WriteHeader` antes do corpo, link pra design de API em BACKEND-BEST-PRACTICES.md.
 
 ### Tópico: Gin (framework web)
-- Status: [ ]
+- Status: [x]
 - Dia do plano: —
 - Conteúdo: roteamento, grupos de rota, binding de request, comparação com o que dá pra fazer só com stdlib.
-- Contexto/notas: —
+- Contexto/notas: Coberto — README em `go/gin-framework-web/`: quando sair da stdlib, `gin.Context` único, `ShouldBindJSON`, `Group` com middleware compartilhado.
 
 ### Tópico: JSON e consumo de APIs externas
-- Status: [ ]
+- Status: [x]
 - Dia do plano: 9
 - Conteúdo: JSON, struct tags, consumir APIs externas (base pra integrar com LLMs a partir do Go).
-- Contexto/notas: —
+- Contexto/notas: Coberto — README em `go/json-e-consumo-de-apis-externas/`: struct tags/omitempty, Marshal/Unmarshal sem exception, `context.WithTimeout` em chamada externa, `defer resp.Body.Close()`.
 
 ### Tópico: Acesso a dados e context.Context
-- Status: [ ]
+- Status: [x]
 - Dia do plano: 10
 - Conteúdo: `database/sql`/driver, `context.Context` (cancelamento, timeouts).
-- Contexto/notas: —
+- Contexto/notas: Coberto — README em `go/acesso-a-dados-e-context/`: pool embutido (SetMaxOpenConns), Scan campo a campo, ctx propagado em toda cadeia de I/O, cancelamento em cascata.
 
 ### Tópico: Migrations de banco de dados
-- Status: [ ]
+- Status: [x]
 - Dia do plano: —
 - Conteúdo: ferramentas de migration em Go (ex: golang-migrate/goose), versionamento de schema.
-- Contexto/notas: —
+- Contexto/notas: Coberto — README em `go/migrations-de-banco-de-dados/`: golang-migrate/goose/atlas, padrão up/down, schema como fonte da verdade.
 
 ### Tópico: Repository pattern na prática
-- Status: [ ]
+- Status: [x]
 - Dia do plano: —
 - Conteúdo: interface de repositório no domínio, implementação concreta na infra — amarra direto com Clean Architecture do Módulo 2.
-- Contexto/notas: —
+- Contexto/notas: Coberto — README em `go/repository-pattern-na-pratica/`: exemplo completo com implementação Postgres real + fake in-memory pra teste, mesma interface.
 
 ### Tópico: Tratamento de erros e exceções em APIs
-- Status: [ ]
+- Status: [x]
 - Dia do plano: —
 - Conteúdo: tipos de erro customizados, handler central de erro, mapear erro de domínio para status HTTP.
-- Contexto/notas: —
+- Contexto/notas: Coberto — README em `go/tratamento-de-erros-e-excecoes-em-apis/`: `writeError` mapeando sentinel error → status, comparação com exception handler do FastAPI, 3 categorias de erro (validação/negócio/infra).
 
 ### Tópico: Middleware e chain de handlers
-- Status: [ ]
+- Status: [x]
 - Dia do plano: —
 - Conteúdo: auth, logging, recovery de panic, composição de middlewares.
-- Contexto/notas: —
+- Contexto/notas: Coberto — README em `go/middleware-e-chain-de-handlers/`: middleware como função de ordem superior, recover como uso legítimo de panic/recover, chain no Gin (`c.Next()`/`c.Abort()`), ordem importa.
 
 ### Tópico: Validação de input
-- Status: [ ]
+- Status: [x]
 - Dia do plano: —
 - Conteúdo: struct tags de validação, validar request antes de chegar na regra de negócio.
-- Contexto/notas: —
+- Contexto/notas: Coberto — README em `go/validacao-de-input/`: validação manual vs `binding` tag (go-playground/validator via Gin), sempre 400 nunca 500.
 
 ### Tópico: Padrões de concorrência para infra
-- Status: [ ]
+- Status: [x]
 - Dia do plano: 11
 - Conteúdo: worker pools, rate limiting, pipelines.
-- Contexto/notas: —
+- Contexto/notas: Coberto — README em `go/padroes-de-concorrencia-para-infra/`: worker pool com WaitGroup, rate limit com time.Ticker (+ nota sobre x/time/rate), pipeline de estágios encadeados por channel.
 
 ### Tópico: Produção — logging, config, error wrapping
-- Status: [ ]
+- Status: [x]
 - Dia do plano: 12
 - Conteúdo: logging estruturado, config/env vars, `fmt.Errorf` + `%w`.
-- Contexto/notas: —
+- Contexto/notas: Coberto — README em `go/producao-logging-config-error-wrapping/`: `log/slog` (stdlib desde 1.21), correlation ID via `context.WithValue`, config via env falhando cedo no boot, error wrapping revisitado.
 
 ### Tópico: Testes (unitários e integração)
-- Status: [ ]
+- Status: [x]
 - Dia do plano: —
 - Conteúdo: table-driven tests aplicados a handlers/repositórios, mocks via interface, testes de integração com banco real/testcontainers.
-- Contexto/notas: —
+- Contexto/notas: Coberto — README em `go/testes-unitarios-e-integracao/`: `httptest`, fake repo pra unitário vs testcontainers-go pra integração (`testing.Short()`), `go test -race`.
 
 ### Tópico: Projeto final — API + LLM
-- Status: [ ]
+- Status: [x]
 - Dia do plano: 13
 - Conteúdo: serviço Go que expõe API e chama uma API de LLM (API + infra + IA juntos).
-- Contexto/notas: —
+- Contexto/notas: Coberto — README em `go/projeto-final-api-llm/`: esboço de arquitetura completo (domain/llm/infra/http) amarrando todo o Módulo 3. Implementação real ainda não feita, sem exercício gerado.
 
 ## Módulo 4: Revisão final
 
