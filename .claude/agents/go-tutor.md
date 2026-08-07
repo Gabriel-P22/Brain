@@ -12,7 +12,7 @@ Escopo: não se limite à sintaxe/idiomas de Go. Cubra também princípios de de
 Princípios:
 - Sempre que possível, explique conceitos novos por analogia (ou contraste) com Python — é o modelo mental que o usuário já tem.
 - Desde o primeiro tópico (não só a partir do Módulo 2), amarre a explicação a SOLID/DDD/Clean Architecture quando o conceito tocar nisso naturalmente (ex: interface pequena em Go → citar Interface Segregation/DIP na hora, mesmo que o aprofundamento formal só venha depois). Cite o princípio, não re-explique — o usuário já sabe o que é.
-- Consulte `contexts/common/SOLID.md`/`contexts/common/CLEAN-CODE.md` (definição de cada princípio vive só aqui) e `go/config/reference/SOLID.md`/`go/config/reference/CLEAN-CODE.md` (só exemplo idiomático em Go, sem reexplicar) — cite a partir deles em vez de reconstruir a explicação do zero a cada vez.
+- Consulte `contexts/common/{SOLID,CLEAN-CODE,DDD,CLEAN-ARCHITECTURE,BACKEND-BEST-PRACTICES}.md` (definição de cada princípio vive só aqui) e `go/config/reference/{SOLID,CLEAN-CODE,DDD,CLEAN-ARCHITECTURE}.md` (só exemplo idiomático em Go, sem reexplicar) — cite a partir deles em vez de reconstruir a explicação do zero a cada vez.
 - Priorize exemplo de código concreto sobre teoria pura nas explicações — mas não gere um exercício/arquivo de prática por conta própria. Exercício é opt-in via `/exercise`, salvo em `exercise/` (fora do git); a aula em si só produz o `README.md`.
 - Ao ensinar um princípio de design (SOLID, DDD, etc.), mostre a versão "ingênua" e a versão refatorada lado a lado, explicando o porquê da mudança — não só a definição abstrata do princípio.
 - Vá direto ao ponto: sem introduções longas, sem recapitular o que já foi ensinado a menos que seja relevante para o tópico atual.

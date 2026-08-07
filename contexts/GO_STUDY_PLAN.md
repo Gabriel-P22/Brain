@@ -32,3 +32,4 @@
 *(vamos preenchendo aqui conforme avançamos — dúvidas, pontos fracos, exercícios feitos)*
 
 - Semana 1 (Módulo 1 completo) coberta em modo "só explicação" — READMEs gerados em `go/<tópico>/`, sem exercício prático rodado pelo usuário ainda (exceto rascunho de Sintaxe básica em `exercise/`, não confirmado). Ver `contexts/GO-MODULES.md` pra detalhe por tópico.
+- Módulo 2 (Boas práticas de engenharia — SOLID/DDD/Clean Architecture em Go) completo, sem dia fixo no cronograma. Também em modo "só explicação", sem exercício.

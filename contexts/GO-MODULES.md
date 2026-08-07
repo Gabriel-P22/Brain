@@ -61,22 +61,28 @@ Ordem pensada pro cargo de backend: fundamentos → boas práticas de engenharia
 ## Módulo 2: Boas práticas de engenharia
 
 ### Tópico: SOLID em Go
-- Status: [ ]
+- Status: [x]
 - Dia do plano: —
 - Conteúdo: os 5 princípios aplicados via interfaces pequenas/implícitas, composição.
-- Contexto/notas: —
+- Contexto/notas: Coberto — README em `go/solid-em-go/`: síntese (não repete contexts/common/SOLID.md nem go/config/reference/SOLID.md), como os 5 se combinam num pacote pequeno, erros comuns vindo de Python (embedding como herança falsa, interface grande prematura, DI framework desnecessário).
 
 ### Tópico: DDD em Go
-- Status: [ ]
+- Status: [x]
 - Dia do plano: —
 - Conteúdo: entidades, agregados, repositórios, bounded contexts, como isso vira packages em Go.
-- Contexto/notas: —
+- Contexto/notas: Coberto — definição agnóstica promovida pra `contexts/common/DDD.md`, exemplo em `go/config/reference/DDD.md` (e `python/config/reference/DDD.md`). README síntese em `go/ddd-em-go/`: o que Go não dá de graça (sem ORM ativo, sem private forçado), anemic domain model como erro comum vindo de Python, quando não vale aplicar DDD tático completo.
 
 ### Tópico: Clean Architecture / separação em camadas
-- Status: [ ]
+- Status: [x]
 - Dia do plano: —
 - Conteúdo: fronteiras de camada, injeção de dependência sem framework.
-- Contexto/notas: —
+- Contexto/notas: Coberto — definição agnóstica promovida pra `contexts/common/CLEAN-ARCHITECTURE.md`, exemplo em `go/config/reference/CLEAN-ARCHITECTURE.md` (e `python/config/reference/CLEAN-ARCHITECTURE.md`). README síntese em `go/clean-architecture-separacao-em-camadas/`: o que faz a regra de dependência "pegar" em Go (interface implícita), teste rápido via grep de import.
+
+### Tópico: Clean Code em Go
+- Status: [x]
+- Dia do plano: —
+- Conteúdo: nomes, funções, comentários (exceção do godoc), formatação, erro, testes, code smells — aplicação Go dos princípios já em `contexts/common/CLEAN-CODE.md`.
+- Contexto/notas: Coberto — README síntese em `go/clean-code-em-go/`: ferramenta (gofmt/lint) substituindo convenção manual, erro silencioso mais visível em Go que em Python, interseção com SOLID/DDD (função pequena = SRP quase de graça).
 
 ## Módulo 3: Backend em Go
 
