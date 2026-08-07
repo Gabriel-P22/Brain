@@ -2,10 +2,11 @@
 
 Estudo de Go pro cargo Go/Python + IA (APIs, infra, integração com LLM). Cronograma em [contexts/GO_STUDY_PLAN.md](../contexts/GO_STUDY_PLAN.md), conteúdo de cada tópico em [contexts/GO-MODULES.md](../contexts/GO-MODULES.md) — este README só lista a ordem de estudo e aponta pra pasta de cada tópico. Referência de SOLID/Clean Code idiomáticos em [config/reference/](config/reference/).
 
-Exercício de cada tópico entra na pasta correspondente conforme `/topic` ou `/exercise` roda — pastas começam vazias.
+Cada pasta de tópico tem seu próprio `README.md` (explicação, gerado por `/topic`) e uma subpasta `exercise/` (código de prática opcional, gerado por `/exercise`, fora do git).
 
 ## Módulo 1: Fundamentos
 
+0. [O que é Go](o-que-e-go/)
 1. [Sintaxe básica](sintaxe-basica/)
 2. [Structs, métodos e interfaces](structs-metodos-e-interfaces/)
 3. [Ponteiros, slices e maps](ponteiros-slices-e-maps/)

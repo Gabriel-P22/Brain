@@ -8,13 +8,13 @@
 
 ## Semana 1 — Fundamentos
 
-- [ ] **Dia 1** — Setup (Go toolchain, `go mod`), sintaxe básica: variáveis, tipos, `const`, controle de fluxo (`if`, `for` — Go só tem `for`), funções, múltiplos retornos. Comparar com Python.
-- [ ] **Dia 2** — Structs e métodos (substituem classes), interfaces (tipagem estrutural implícita — bem diferente de Python/ABC).
-- [ ] **Dia 3** — Ponteiros (novidade real vs Python), arrays vs slices, maps.
-- [ ] **Dia 4** — Tratamento de erros idiomático (`error` como valor, sem exceptions), pacotes e organização de módulos.
-- [ ] **Dia 5** — Concorrência parte 1: goroutines e channels (o maior diferencial de Go, crítico pro papel de infra).
-- [ ] **Dia 6** — Concorrência parte 2: `sync` (WaitGroup, Mutex), `select`, testes em Go (`testing`, table-driven tests).
-- [ ] **Dia 7** — Revisão + projeto pequeno: CLI que consolida os conceitos da semana.
+- [x] **Dia 1** — O que é Go (origem, diferenciais, instalação) + setup (Go toolchain, `go mod`), sintaxe básica: variáveis, tipos, `const`, controle de fluxo (`if`, `for` — Go só tem `for`), funções, múltiplos retornos. Comparar com Python.
+- [x] **Dia 2** — Structs e métodos (substituem classes), interfaces (tipagem estrutural implícita — bem diferente de Python/ABC).
+- [x] **Dia 3** — Ponteiros (novidade real vs Python), arrays vs slices, maps.
+- [x] **Dia 4** — Tratamento de erros idiomático (`error` como valor, sem exceptions), pacotes e organização de módulos.
+- [x] **Dia 5** — Concorrência parte 1: goroutines e channels (o maior diferencial de Go, crítico pro papel de infra).
+- [x] **Dia 6** — Concorrência parte 2: `sync` (WaitGroup, Mutex), `select`, testes em Go (`testing`, table-driven tests).
+- [x] **Dia 7** — Revisão + projeto pequeno: CLI que consolida os conceitos da semana.
 
 ## Semana 2 — Aplicado ao trabalho
 
@@ -30,3 +30,5 @@
 
 ## Notas de progresso
 *(vamos preenchendo aqui conforme avançamos — dúvidas, pontos fracos, exercícios feitos)*
+
+- Semana 1 (Módulo 1 completo) coberta em modo "só explicação" — READMEs gerados em `go/<tópico>/`, sem exercício prático rodado pelo usuário ainda (exceto rascunho de Sintaxe básica em `exercise/`, não confirmado). Ver `contexts/GO-MODULES.md` pra detalhe por tópico.

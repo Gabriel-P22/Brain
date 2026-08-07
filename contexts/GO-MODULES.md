@@ -10,47 +10,53 @@ Ordem pensada pro cargo de backend: fundamentos → boas práticas de engenharia
 
 ## Módulo 1: Fundamentos
 
-### Tópico: Sintaxe básica
-- Status: [ ]
+### Tópico: O que é Go
+- Status: [x]
 - Dia do plano: 1
-- Conteúdo: setup (toolchain, `go mod`), variáveis, tipos, `const`, controle de fluxo (`if`, `for` — Go só tem `for`), funções, múltiplos retornos.
-- Contexto/notas: —
+- Conteúdo: origem e filosofia da linguagem, diferenças em relação a Python (compilada/estática, concorrência nativa, sem herança, erro como valor, deploy em binário único), como instalar, diferenciais (binário estático, compilação rápida, concorrência, tooling embutido, stdlib de rede) e contrapartidas honestas (menos expressiva pra prototipagem, ecossistema menor em ML/data).
+- Contexto/notas: Coberto — README em `go/o-que-e-go/`.
+
+### Tópico: Sintaxe básica
+- Status: [x]
+- Dia do plano: 1
+- Conteúdo: setup (toolchain, `go mod`), variáveis, tipos (numéricos com largura explícita, string, bool, byte, rune), zero value, conversão explícita, funções como tipo de primeira classe, controle de fluxo (`if`, `for` — Go só tem `for`), múltiplos retornos.
+- Contexto/notas: Coberto — README em `go/sintaxe-basica/`. Exercício rascunho em `exercise/` (soma + divide com erro).
 
 ### Tópico: Structs, métodos e interfaces
-- Status: [ ]
+- Status: [x]
 - Dia do plano: 2
 - Conteúdo: structs e métodos (substituem classes), interfaces (tipagem estrutural implícita — bem diferente de Python/ABC).
-- Contexto/notas: —
+- Contexto/notas: Coberto — README em `go/structs-metodos-e-interfaces/`: receiver valor vs ponteiro, embedding (composição, não herança), satisfação implícita de interface, zero value struct utilizável.
 
 ### Tópico: Ponteiros, slices e maps
-- Status: [ ]
+- Status: [x]
 - Dia do plano: 3
 - Conteúdo: ponteiros (novidade real vs Python), arrays vs slices, maps.
-- Contexto/notas: —
+- Contexto/notas: Coberto — README em `go/ponteiros-slices-e-maps/`: `&`/`*`, slice compartilhando array subjacente (gotcha), map com zero value nil (panic ao escrever) e sem ordem de iteração garantida.
 
 ### Tópico: Tratamento de erros e pacotes
-- Status: [ ]
+- Status: [x]
 - Dia do plano: 4
 - Conteúdo: `error` como valor (sem exceptions), organização de pacotes/módulos.
-- Contexto/notas: —
+- Contexto/notas: Coberto — README em `go/tratamento-de-erros-e-pacotes/`: error como interface, erro customizado, wrapping com `%w` + `errors.Is`/`errors.As`, panic/recover não é try/except, visibilidade por caixa da letra.
 
 ### Tópico: Concorrência — goroutines e channels
-- Status: [ ]
+- Status: [x]
 - Dia do plano: 5
 - Conteúdo: goroutines, channels — o maior diferencial de Go, crítico pro papel de infra.
-- Contexto/notas: —
+- Contexto/notas: Coberto — README em `go/concorrencia-goroutines-e-channels/`: `go`, channel bufferizado/não, close+range, goroutine leak, closure de loop var (fixado desde Go 1.22).
 
 ### Tópico: Concorrência — sync, select e testes
-- Status: [ ]
+- Status: [x]
 - Dia do plano: 6
 - Conteúdo: `sync` (WaitGroup, Mutex), `select`, `testing` (table-driven tests).
-- Contexto/notas: —
+- Contexto/notas: Coberto — README em `go/concorrencia-sync-select-e-testes/`: WaitGroup+defer, Mutex+race detector, select com time.After, table-driven test com t.Run.
 
 ### Tópico: Revisão e projeto CLI
-- Status: [ ]
+- Status: [x]
 - Dia do plano: 7
 - Conteúdo: consolidação da semana 1 num CLI pequeno.
-- Contexto/notas: —
+- Contexto/notas: Coberto — README em `go/revisao-e-projeto-cli/`: recap do módulo + proposta de projeto (verificador de URLs concorrente via `flag`). Projeto em si ainda não implementado, sem exercício gerado.
 
 ## Módulo 2: Boas práticas de engenharia
 
