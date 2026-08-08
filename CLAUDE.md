@@ -6,6 +6,8 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 Personal study vault, not a software project. User was approved in a Go/Python + AI hiring process. Senior software engineer overall (already knows SOLID, DDD, Clean Architecture, etc. from experience — Python is their strongest language) but has zero Go experience specifically, and has 2 weeks to get productive. This directory is where the day-by-day learning happens: notes, exercises, and small practice projects.
 
+The `go/*/README.md` files double as a living course/apostila: written so a junior developer with a lot of difficulty and zero prior programming experience can read any topic standalone and follow it. That means no Python (or any other language) comparisons as a teaching crutch — explain Go concepts on their own terms, from first principles, in plain language — and err toward more detail and more worked examples rather than terse notes. This applies only to Go topic READMEs; it does not change who the user is (see above) or the tutoring style of other agents.
+
 Two complementary files, both in `contexts/`:
 - [contexts/GO_STUDY_PLAN.md](contexts/GO_STUDY_PLAN.md) — the schedule ("when"): 14-day curriculum, fundamentals week 1, applied/job-relevant week 2.
 - [contexts/GO-MODULES.md](contexts/GO-MODULES.md) — the content ("what"): topics grouped in modules, each with its own status checkbox and accumulating "Contexto/notas" (persists regardless of which day it was actually studied on). This is the vault's pattern for subject content — future subjects (Python, arquitetura, IA) get their own `*-MODULES.md` file the same way, also under `contexts/`.
@@ -15,7 +17,7 @@ Check both before assuming where the user is: GO_STUDY_PLAN.md for pacing/deadli
 ## Folder layout
 
 - `go/` — Go exercises and mini-projects for the study plan, plus `go/config/reference/` (idiomatic Go examples of each principle from contexts/) and `go/config/` itself reserved for future language-specific config (linter settings, etc.).
-- `python/` — Python-side material (used as the reference language to explain Go concepts by comparison, and for any Python parts of the study), plus `python/config/reference/` (same principles, Python-idiomatic examples — the comparison anchor).
+- `python/` — Python-side material (the user's own Python study, kept separate from the Go READMEs), plus `python/config/reference/` (same principles, Python-idiomatic examples, useful when a `contexts/common/*.md` file wants a cross-language pair — not used inside `go/` topic READMEs anymore).
 - `infra/` — infra/concurrency-focused material (worker pools, rate limiting, deployment-adjacent topics), matching the "infra" angle of the target role.
 - `ia/` — AI-focused material: LLMs, MCP (Model Context Protocol), generative AI, and related topics — including how these get integrated from Go/Python (ties into the plan's Day 9/Day 13 LLM integration work).
 - `contexts/` — living reference docs the study workflow reads/writes: GO_STUDY_PLAN.md (schedule) and GO-MODULES.md (per-topic content, one `*-MODULES.md` per subject), plus saved conversation contexts (session recaps, decisions made, state to resume from).
@@ -26,11 +28,11 @@ Each language folder gets one subfolder per topic (kebab-case, no numeric prefix
 
 ## Working conventions
 
-- Teach by analogy to Python where it shortens the explanation (user's existing mental model).
-- Tie explanations back to SOLID/DDD/Clean Architecture (and other design principles the user already knows as a senior engineer) from the very first topic — not deferred until Módulo 2 of GO-MODULES.md. Módulo 2 goes deep on all four (SOLID, DDD, Clean Architecture, Clean Code); earlier topics should still name the relevant principle in passing when it's naturally touched (e.g. small interfaces in Dia 2 → mention Interface Segregation/DIP briefly). Each principle follows the same split: definition lives ONLY in `contexts/common/{SOLID,CLEAN-CODE,DDD,CLEAN-ARCHITECTURE}.md` (agnostic, no code); idiomatic example (code only, no re-explanation) lives per-language under `config/reference/` (same four filenames, under `go/config/reference/` and `python/config/reference/`). A topic's own `README.md` (e.g. `go/solid-em-go/`) is neither of those — it's Go-specific synthesis: how the principle plays out uniquely in Go, common mistakes coming from Python, cross-references to the other principles. Cite from the reference files rather than re-deriving the explanation.
+- Write Go topic READMEs for a beginner with no prior programming background — explain concepts from first principles, in plain language, without leaning on comparisons to Python or any other language. Prefer more detail and more worked examples over concise notes.
+- Tie explanations back to SOLID/DDD/Clean Architecture (and other design principles) from the very first topic — not deferred until Módulo 2 of GO-MODULES.md. Módulo 2 goes deep on all four (SOLID, DDD, Clean Architecture, Clean Code); earlier topics should still name the relevant principle in passing when it's naturally touched (e.g. small interfaces in Dia 2 → mention Interface Segregation/DIP briefly). Each principle follows the same split: definition lives ONLY in `contexts/common/{SOLID,CLEAN-CODE,DDD,CLEAN-ARCHITECTURE}.md` (agnostic, no code); idiomatic example (code only, no re-explanation) lives per-language under `config/reference/` (same four filenames, under `go/config/reference/` and `python/config/reference/`). A topic's own `README.md` (e.g. `go/solid-em-go/`) is neither of those — it's Go-specific synthesis: how the principle plays out uniquely in Go, common beginner mistakes, cross-references to the other principles. Cite from the reference files rather than re-deriving the explanation.
 - Prioritize concrete code examples over pure theory in explanations, but don't force a runnable exercise file unless the user asks (via `/exercise`) — see the `README.md`/`exercise/` split above.
 - Standard Go tooling applies once code exists: `go run <file>.go`, `go test ./...`, `go build`, `gofmt`/`golangci-lint` for style. No custom build system.
-- Keep code in this repo idiomatic Go (per plan's Day 14 focus), not Python-flavored Go.
+- Keep code in this repo idiomatic Go (per plan's Day 14 focus).
 
 ## .claude/ tooling
 

@@ -1,113 +1,186 @@
 # Sintaxe básica
 
-## Setup
+## Setup: iniciando um módulo
 
-`go mod init <nome>` é o equivalente do `pyproject.toml`/`requirements.txt` — declara o módulo e (futuramente) as dependências. Um arquivo `.go` roda direto com `go run arquivo.go`, sem REPL padrão como o `python`.
+Antes de escrever código Go organizado em um projeto, você precisa de um arquivo `go.mod` — ele declara o nome do módulo (geralmente o caminho onde o código vive, tipo `github.com/seu-usuario/seu-projeto`) e, conforme o projeto cresce, as dependências externas que ele usa. Para criar esse arquivo:
+
+```
+go mod init nome-do-modulo
+```
+
+Isso gera um `go.mod` na pasta atual. O tópico [Gerenciamento de pacotes](../gerenciamento-de-pacotes/) explica esse arquivo (e o `go.sum` que aparece junto quando há dependências) em detalhe.
+
+Um único arquivo `.go` roda direto, sem precisar de módulo, com:
+
+```
+go run arquivo.go
+```
+
+Não existe um modo interativo padrão no Go — nenhum terminal onde você digita uma linha por vez e vê o resultado imediatamente. Todo código Go vive em um arquivo e roda a partir dele.
 
 ## Variáveis
 
-Go é estaticamente tipado, mas com inferência:
+Go é **estaticamente tipado** (o tipo de cada variável é fixo e checado antes do programa rodar — ver [O que é Go](../o-que-e-go/)), mas tem **inferência de tipo**: você não precisa escrever o tipo toda vez, o compilador consegue descobrir sozinho a partir do valor.
 
 ```go
-var x int = 10   // explícito
-y := 10           // inferido — := só funciona dentro de função, não em nível de pacote
-const Pi = 3.14    // const é resolvido em compile-time, diferente do "const por convenção" do Python
+var x int = 10   // forma explícita: tipo escrito na mão
+var y = 10       // forma com inferência: o compilador deduz que y é int, pelo valor 10
+z := 10          // forma curta: mesma coisa que "var z = 10", mas mais usada no dia a dia
+
+const Pi = 3.14  // const é uma constante — resolvida em tempo de compilação, nunca muda depois
 ```
 
-Sem `Any` implícito: toda variável tem tipo fixo depois de declarada. Não existe reatribuir `x = "texto"` depois de `x := 10` — o compilador rejeita.
+Detalhes importantes sobre cada forma:
 
-## Tipos
+- `var x int = 10` — a forma mais explícita. Útil quando você quer deixar o tipo bem claro, ou quando está declarando uma variável sem valor inicial ainda (ver "zero value" abaixo).
+- `y := 10` — o operador `:=` declara **e** inicializa a variável na mesma linha, com o tipo inferido do valor à direita. É a forma mais comum dentro de funções. Importante: `:=` só funciona **dentro de uma função** — no nível mais externo de um arquivo (fora de qualquer função), você é obrigado a usar `var`.
+- `const Pi = 3.14` — uma constante. Diferente de uma variável comum, o valor de uma `const` é resolvido durante a compilação e nunca pode ser reatribuído depois.
 
-Em Python o sistema de tipos é dinâmico (o valor carrega o tipo, a variável não) e "opcional" (type hints são checados por ferramenta externa, não pelo interpretador). Em Go o tipo é da variável, checado em compile-time, e sempre obrigatório — isso é o que torna Go rápido e permite pegar erro de tipo antes de rodar, não em produção.
-
-### Tipos básicos
+Depois que uma variável é declarada com um tipo, esse tipo é fixo para sempre — não existe reatribuir um valor de outro tipo:
 
 ```go
-var i int        // tamanho da plataforma (64 bits normalmente) — use int por padrão
-var i8 int8       // -128 a 127
-var u uint        // sem sinal — só positivo
-var f float64      // padrão pra ponto flutuante (float32 existe, mas float64 é o default idiomático)
-var s string       // imutável, como str em Python — mas iterar sobre string itera bytes/runes, não "caracteres" direto
-var b bool          // true/false, sem truthiness de valor (0, "", nil NÃO viram false implicitamente como em Python)
-var by byte          // alias de uint8 — usado pra dado bruto/binário
-var r rune            // alias de int32 — um "caractere" Unicode (equivalente mais próximo do str[i] de um Python que lida com Unicode)
+x := 10
+x = "texto" // ERRO DE COMPILAÇÃO: cannot use "texto" (type string) as type int
 ```
 
-Diferente de Python (só `int`, sem limite de tamanho, e `float` = double sempre), em Go você escolhe explicitamente a largura (`int8`...`int64`, `uint8`...`uint64`) quando importa — isso importa em código de infra/performance, onde tamanho de dado é decisão consciente, não incidental.
+## Tipos básicos
 
-### Zero value — não existe `None`/`null` "solto"
+Cada variável em Go tem um tipo obrigatório, sempre. Não existe uma variável "sem tipo definido" ou que aceite qualquer coisa por padrão — isso é o que permite ao compilador pegar erros de tipo antes do programa rodar.
 
-Toda variável declarada sem valor inicial recebe o **zero value** do seu tipo, nunca um estado "vazio" universal:
+```go
+var i int        // número inteiro; tamanho depende da plataforma (normalmente 64 bits) — use int como padrão
+var i8 int8       // inteiro pequeno: de -128 a 127
+var u uint        // inteiro sem sinal — só valores positivos (e zero)
+var f float64      // número de ponto flutuante (com casas decimais); float64 é o padrão idiomático
+var s string       // texto, sempre imutável (uma vez criada, uma string não pode ser alterada em memória)
+var b bool          // true ou false — só isso, sem "valores que contam como falso" por coincidência
+var by byte          // um byte de dado bruto; é só um outro nome (alias) para uint8
+var r rune            // um "caractere" no sentido Unicode; é só um outro nome (alias) para int32
+```
+
+Por que existem tantos tamanhos de inteiro (`int8` até `int64`, `uint8` até `uint64`) em vez de um único tipo "número inteiro" genérico? Porque em código de infraestrutura e sistemas, o tamanho exato de um dado às vezes importa de verdade — para performance, para uso de memória, ou para bater exatamente com um formato binário externo (um protocolo de rede, por exemplo). Go deixa essa escolha explícita, em vez de esconder essa decisão. No dia a dia, a recomendação idiomática é simples: use `int` para inteiros e `float64` para decimais, a não ser que você tenha um motivo concreto para outro tamanho.
+
+Sobre `bool`: em Go, `true` e `false` são os únicos dois valores possíveis de um `bool`. Não existe a ideia de "outros valores que também contam como falso" (como um número zero, ou um texto vazio, sendo tratados automaticamente como falso dentro de um `if`) — se você quer checar se um número é zero, escreve `if numero == 0`, explicitamente.
+
+## Zero value: toda variável já nasce com um valor utilizável
+
+Quando você declara uma variável sem dar um valor inicial, ela não fica "vazia" ou "indefinida" — Go automaticamente atribui o que se chama de **zero value**: um valor padrão específico para cada tipo.
 
 ```go
 var i int       // 0
-var s string     // "" (string vazia, não nil)
+var s string     // "" (texto vazio, não algo tipo "sem valor")
 var b bool        // false
-var p *int         // nil (só ponteiro, slice, map, interface, channel, func têm nil)
+var f float64      // 0.0
+var p *int         // nil — "nenhum endereço de memória apontado" (só ponteiro, slice, map, interface, channel e função podem ser nil)
 ```
 
-Isso substitui boa parte do uso de `None` do Python como "ainda não inicializado" — em Go, "ainda não inicializado" já é um valor utilizável (0, "", false), não precisa checar `is None` antes de usar na maioria dos casos.
+Isso é uma decisão de design importante: em Go, "ainda não inicializado" já é, por padrão, um valor pronto pra uso (0, texto vazio, falso) — na maioria dos casos você pode simplesmente começar a usar a variável sem precisar checar antes se ela "tem algum valor real". `nil` existe só para os tipos que representam "referência para algo que pode não existir" (ponteiro, slice, map, interface, channel, função) — é o único caso em Go parecido com a ideia de "nenhum valor aqui".
 
-### Conversão explícita — sem coerção implícita
+## Conversão de tipo: sempre explícita
+
+Go nunca converte um tipo numérico para outro sozinho, mesmo quando pareceria óbvio fazer isso. Você sempre precisa converter manualmente:
 
 ```go
 var i int = 10
-var f float64 = float64(i)  // conversão explícita obrigatória
+var f float64 = float64(i)  // conversão explícita: float64(i) transforma o int i num float64
 // f := i seria erro de compilação: mismatched types
 ```
 
-Python converte `int` pra `float` automaticamente numa divisão (`1 / 2 == 0.5`); Go não — `1 / 2` entre `int` é `0` (divisão inteira), e misturar tipo numérico diferente sem conversão explícita nem compila.
-
-### Funções são tipo de primeira classe
+Isso também vale em contas: dividir dois `int` produz um resultado `int` (a parte decimal é descartada, não arredondada), mesmo que matematicamente o resultado devesse ter casas decimais:
 
 ```go
-type Validator func(string) error   // função é um tipo, pode ter nome próprio
+resultado := 1 / 2      // resultado vale 0 — divisão inteira, a parte decimal simplesmente some
+resultadoCerto := 1.0 / 2.0  // resultadoCerto vale 0.5 — porque os dois operandos já são float64
+```
 
-var v Validator = func(s string) error {
+Se você tenta misturar um `int` com um `float64` diretamente numa operação, sem converter, o código nem compila:
+
+```go
+var i int = 1
+var f float64 = 2.0
+soma := i + f // ERRO DE COMPILAÇÃO: mismatched types int and float64
+somaCerta := float64(i) + f // 3.0 — funciona, porque agora os dois lados são float64
+```
+
+## Funções são um tipo de valor
+
+Em Go, uma função pode ser tratada como qualquer outro valor: guardada numa variável, passada como argumento para outra função, e até ter seu próprio tipo nomeado:
+
+```go
+type Validador func(string) error   // declara um tipo chamado Validador: qualquer função que recebe uma string e devolve um error
+
+var v Validador = func(s string) error {
     if s == "" {
-        return errors.New("vazio")
+        return errors.New("texto vazio")
     }
     return nil
 }
 
-func run(v Validator, input string) error { return v(input) }
+func rodar(v Validador, entrada string) error {
+    return v(entrada)
+}
 ```
 
-Em Python isso é natural (função é objeto). Em Go é mais explícito: o tipo da função (parâmetros + retorno) é a assinatura, e isso é a base de como interface pequena + função batem — muita coisa que em outras linguagens vira classe com um método vira, em Go, simplesmente uma variável do tipo `func(...) ...`.
+Isso é bem mais do que um detalhe de sintaxe — é a base de como Go resolve, de forma simples, coisas que em outras abordagens exigiriam criar uma classe inteira só para representar "um comportamento configurável". Aqui, `Validador` é só uma variável do tipo certo, que pode ser trocada por outra implementação sem precisar de herança nem hierarquia nenhuma.
 
 ## Controle de fluxo
 
-Go só tem `for` — não existe `while`, nem list comprehension:
+Go tem apenas uma palavra-chave de repetição: `for`. Não existe `while`, nem `do-while`, nem nenhum outro tipo de laço — `for` cobre todos os casos, com formas diferentes de escrever a condição:
 
 ```go
-for i := 0; i < 10; i++ { }   // clássico
-for condition { }              // vira o "while"
-for { }                        // loop infinito, break manual
+for i := 0; i < 10; i++ {
+    fmt.Println(i)
+}    // a forma clássica: inicialização, condição, incremento
+
+contador := 0
+for contador < 5 {
+    contador++
+}    // só a condição — funciona como o "enquanto" de outras linguagens
+
+for {
+    // corpo do laço
+    break // sem essa linha (ou algum outro jeito de sair), esse laço nunca termina sozinho
+}    // loop infinito, controlado manualmente com break
 ```
 
-`if` não usa parênteses e aceita uma inicialização escopada:
+O `if` em Go não usa parênteses ao redor da condição, e aceita uma instrução de inicialização antes da condição, separada por ponto e vírgula:
 
 ```go
-if err := doSomething(); err != nil {
+if err := fazerAlgo(); err != nil {
     return err
 }
-// err só existe dentro desse if/else — não vaza pro resto da função
+// a variável err só existe dentro deste bloco if/else — fora dele, ela não existe mais
 ```
 
-Isso já é o embrião do padrão de erro do Dia 4 (erro é valor, checado explicitamente, não exceção) e uma aplicação implícita de escopo mínimo — mesmo espírito do Single Responsibility ([contexts/common/SOLID.md](../../contexts/common/SOLID.md)): cada coisa só existe onde precisa existir.
+Essa forma (`if <inicialização>; <condição> { }`) é usada o tempo todo em Go, especialmente com tratamento de erro (assunto do tópico [Tratamento de erros e pacotes](../tratamento-de-erros-e-pacotes/)). A vantagem prática: a variável `err` fica restrita ao menor escopo possível — ela não "vaza" para o resto da função, o que deixa o código mais fácil de acompanhar, porque cada variável só existe exatamente onde é necessária.
 
-## Funções e múltiplo retorno
+## Funções com múltiplos retornos
+
+Diferente de muitas linguagens, onde uma função só devolve um único valor, funções em Go podem devolver mais de um valor ao mesmo tempo — e isso é usado o tempo inteiro para retornar "o resultado" junto com "o erro, se algo deu errado":
 
 ```go
-func divide(a, b float64) (float64, error) {
+func dividir(a, b float64) (float64, error) {
     if b == 0 {
         return 0, errors.New("divisão por zero")
     }
     return a / b, nil
 }
+
+resultado, err := dividir(10, 2)
+if err != nil {
+    fmt.Println("erro:", err)
+    return
+}
+fmt.Println("resultado:", resultado) // 5
 ```
 
-Não existe exception aqui — quem chama é obrigado a olhar os dois valores. Em Python, `divide` levantaria `ZeroDivisionError` e o chamador podia simplesmente não tratar; em Go, ignorar o erro é uma escolha visível (`_, _ = divide(...)`), não um esquecimento silencioso.
+Repare que quem chama `dividir` recebe dois valores de volta (`resultado` e `err`) e é obrigado a lidar com os dois — não existe forma de "pular" o segundo valor de retorno sem escrever algo explícito para isso. Se você realmente quiser ignorar um valor de retorno, precisa fazer isso de forma visível, usando `_` (chamado de "identificador em branco"):
+
+```go
+resultado, _ := dividir(10, 2) // ignora o erro de propósito — visível pra quem ler o código depois
+```
+
+Esse padrão — `resultado, err := algumaFuncao()` seguido de `if err != nil { ... }` — é provavelmente a estrutura de código mais comum que você vai ver em qualquer programa Go real.
 
 ## Exercício
 
