@@ -40,6 +40,12 @@ Ordem pensada pro cargo de backend: fundamentos → boas práticas de engenharia
 - Conteúdo: `error` como valor (sem exceptions), organização de pacotes/módulos.
 - Contexto/notas: Coberto — README em `go/tratamento-de-erros-e-pacotes/`: error como interface, erro customizado, wrapping com `%w` + `errors.Is`/`errors.As`, panic/recover não é try/except, visibilidade por caixa da letra.
 
+### Tópico: Gerenciamento de pacotes
+- Status: [x]
+- Dia do plano: —
+- Conteúdo: `go mod init`/`go mod tidy`, `go get`, `go.sum` vs `go.mod`, versionamento semântico de módulos, módulos privados, vendoring, workspaces (`go work`). Comparar com `pip`/`requirements.txt`/`pyproject.toml`/`poetry`.
+- Contexto/notas: Coberto — README em `go/gerenciamento-de-pacotes/`: go.mod (module path é caminho de import, diferente do metadado de nome do pyproject.toml) vs go.sum (mais parecido com poetry.lock — trava árvore inteira com hash), go mod tidy sem equivalente automático em pip, gotcha do sufixo `/v2` no import pra major version (permite coexistência de majors, algo sem equivalente nativo em Python), vendoring, GOPRIVATE, go.work pra multi-módulo local (equivalente a editable install/path dependency).
+
 ### Tópico: Concorrência — goroutines e channels
 - Status: [x]
 - Dia do plano: 5
@@ -167,7 +173,7 @@ Ordem pensada pro cargo de backend: fundamentos → boas práticas de engenharia
 ## Módulo 4: Revisão final
 
 ### Tópico: Revisão geral e boas práticas idiomáticas
-- Status: [ ]
+- Status: [x]
 - Dia do plano: 14
 - Conteúdo: gaps, perguntas de entrevista/dia-1, `gofmt`/`golangci-lint`, idiomatic Go.
-- Contexto/notas: —
+- Contexto/notas: Coberto — README em `go/revisao-geral-e-boas-praticas-idiomaticas/`: recap por módulo, tabela de armadilhas clássicas (com link pro tópico onde cada uma foi explicada), checklist idiomático rápido, 6 perguntas frequentes de dia-1/entrevista com resposta curta, rotina de `gofmt`/`go vet`/`golangci-lint`/`go test`, e seção honesta de gaps não cobertos no plano (generics, reflection, cgo, cross-compilation avançada). Fecha o plano de 2 semanas inteiro (Módulos 1-4).

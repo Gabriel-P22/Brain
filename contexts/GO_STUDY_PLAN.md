@@ -24,7 +24,7 @@
 - [x] **Dia 11** — Padrões de concorrência para infra: worker pools, rate limiting, pipelines.
 - [x] **Dia 12** — Preocupações de produção: logging estruturado, config/env vars, error wrapping (`fmt.Errorf` + `%w`).
 - [x] **Dia 13** — Projeto final: serviço Go que expõe uma API e chama uma API de LLM (junta tudo: API + infra + IA).
-- [ ] **Dia 14** — Revisão geral, gaps, perguntas frequentes de dia-1/entrevista técnica, `gofmt`/`golangci-lint`, boas práticas idiomáticas.
+- [x] **Dia 14** — Revisão geral, gaps, perguntas frequentes de dia-1/entrevista técnica, `gofmt`/`golangci-lint`, boas práticas idiomáticas.
 
 ---
 
@@ -33,5 +33,7 @@
 
 - Semana 1 (Módulo 1 completo) coberta em modo "só explicação" — READMEs gerados em `go/<tópico>/`, sem exercício prático rodado pelo usuário ainda (exceto rascunho de Sintaxe básica em `exercise/`, não confirmado). Ver `contexts/GO-MODULES.md` pra detalhe por tópico.
 - Módulo 2 (Boas práticas de engenharia — SOLID/DDD/Clean Architecture/Clean Code em Go) completo, sem dia fixo no cronograma. Também em modo "só explicação", sem exercício. Nesse módulo, DDD e Clean Architecture ganharam definição agnóstica em `contexts/common/` + exemplo em `config/reference/` (Go e Python), mesmo padrão do SOLID/Clean Code — e criamos `contexts/common/BACKEND-BEST-PRACTICES.md` como referência agnóstica reutilizável por futuras linguagens/apps.
-- Semana 2 (Módulo 3 — Backend em Go, 13 tópicos) completa, também só explicação, sem exercício rodado. Falta só o Dia 14 (Módulo 4, revisão final) pra fechar o plano de 2 semanas inteiro.
+- Semana 2 (Módulo 3 — Backend em Go, 13 tópicos) completa, também só explicação, sem exercício rodado.
+- Módulo 1 ganhou um tópico extra fora do cronograma original: "Gerenciamento de pacotes" (go.mod/go.sum, go get, semver, vendoring, workspaces), inserido após o Dia 4. Renumerou o `go/README.md` a partir daí.
+- **Plano de 2 semanas fechado por completo** (Módulos 1-4, Dia 14 concluído) — README de revisão geral consolidando armadilhas, checklist idiomático e perguntas de entrevista em `go/revisao-geral-e-boas-praticas-idiomaticas/`.
 - **Pendência real:** nenhum exercício foi de fato praticado pelo usuário ainda (só o rascunho de Sintaxe básica, não confirmado) — todo o progresso até aqui é teórico/leitura. Antes de considerar o plano "pronto pra entrevista", vale rodar `/exercise` em pelo menos os tópicos mais críticos (concorrência, error handling, repository pattern) pra validar que a teoria virou prática de verdade.
