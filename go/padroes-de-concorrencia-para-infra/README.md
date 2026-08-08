@@ -98,7 +98,7 @@ func processAllWithResults(items []Item, workers int) []Result {
 }
 ```
 
-Duas goroutines auxiliares aparecem aqui: uma só pra alimentar `jobs` (sem ela, o envio de itens bloquearia a função inteira até o primeiro worker consumir), e outra só pra fechar `results` assim que todos os workers terminarem — fechar esse channel cedo demais faria a última leitura de `for r := range results` travar pra sempre (goroutine leak, ver [Concorrência — goroutines e channels](../concorrencia-goroutines-e-channels/#duas-armadilhas-clássicas)).
+Duas goroutines auxiliares aparecem aqui: uma só pra alimentar `jobs` (sem ela, o envio de itens bloquearia a função inteira até o primeiro worker consumir), e outra só pra fechar `results` assim que todos os workers terminarem — fechar esse channel cedo demais faria a última leitura de `for r := range results` travar pra sempre (goroutine leak, ver [Concorrência — goroutines e channels](../concorrencia-goroutines-e-channels/#duas-armadilhas-clássicas-de-concorrência-em-go)).
 
 ## Rate limiting — controlar a taxa, não só a quantidade simultânea
 

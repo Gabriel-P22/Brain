@@ -13,8 +13,8 @@ Ordem pensada pro cargo de backend: fundamentos → boas práticas de engenharia
 ### Tópico: O que é Go
 - Status: [x]
 - Dia do plano: 1
-- Conteúdo: origem e filosofia da linguagem, diferenças em relação a Python (compilada/estática, concorrência nativa, sem herança, erro como valor, deploy em binário único), como instalar, diferenciais (binário estático, compilação rápida, concorrência, tooling embutido, stdlib de rede) e contrapartidas honestas (menos expressiva pra prototipagem, ecossistema menor em ML/data).
-- Contexto/notas: Coberto — README em `go/o-que-e-go/`.
+- Conteúdo: origem e filosofia da linguagem, compilada vs interpretada, tipagem estática, concorrência nativa, erro como valor, como instalar, primeiro programa ("Olá, Go!"), diferenciais (binário estático, compilação rápida, concorrência, tooling embutido, stdlib de rede) e contrapartidas honestas (menos expressiva pra prototipagem, ecossistema menor em ML/data).
+- Contexto/notas: Coberto — README em `go/o-que-e-go/`, regenerado no padrão apostila (explicação do zero, sem comparação com outra linguagem, público júnior).
 
 ### Tópico: Sintaxe básica
 - Status: [x]
@@ -25,13 +25,13 @@ Ordem pensada pro cargo de backend: fundamentos → boas práticas de engenharia
 ### Tópico: Structs, métodos e interfaces
 - Status: [x]
 - Dia do plano: 2
-- Conteúdo: structs e métodos (substituem classes), interfaces (tipagem estrutural implícita — bem diferente de Python/ABC).
-- Contexto/notas: Coberto — README em `go/structs-metodos-e-interfaces/`: receiver valor vs ponteiro, embedding (composição, não herança), satisfação implícita de interface, zero value struct utilizável.
+- Conteúdo: structs e métodos (substituem classes), interfaces (tipagem estrutural implícita).
+- Contexto/notas: Coberto — README em `go/structs-metodos-e-interfaces/`, regenerado no padrão apostila: seção "Isso é como Go faz POO" (os 4 pilares mapeados pros mecanismos de Go), receiver valor vs ponteiro, embedding (composição, não herança), satisfação implícita de interface, zero value struct utilizável.
 
 ### Tópico: Ponteiros, slices e maps
 - Status: [x]
 - Dia do plano: 3
-- Conteúdo: ponteiros (novidade real vs Python), arrays vs slices, maps.
+- Conteúdo: ponteiros (endereço de memória), arrays vs slices, maps.
 - Contexto/notas: Coberto — README em `go/ponteiros-slices-e-maps/`: `&`/`*`, slice compartilhando array subjacente (gotcha), map com zero value nil (panic ao escrever) e sem ordem de iteração garantida.
 
 ### Tópico: Tratamento de erros e pacotes
@@ -43,8 +43,8 @@ Ordem pensada pro cargo de backend: fundamentos → boas práticas de engenharia
 ### Tópico: Gerenciamento de pacotes
 - Status: [x]
 - Dia do plano: —
-- Conteúdo: `go mod init`/`go mod tidy`, `go get`, `go.sum` vs `go.mod`, versionamento semântico de módulos, módulos privados, vendoring, workspaces (`go work`). Comparar com `pip`/`requirements.txt`/`pyproject.toml`/`poetry`.
-- Contexto/notas: Coberto — README em `go/gerenciamento-de-pacotes/`: go.mod (module path é caminho de import, diferente do metadado de nome do pyproject.toml) vs go.sum (mais parecido com poetry.lock — trava árvore inteira com hash), go mod tidy sem equivalente automático em pip, gotcha do sufixo `/v2` no import pra major version (permite coexistência de majors, algo sem equivalente nativo em Python), vendoring, GOPRIVATE, go.work pra multi-módulo local (equivalente a editable install/path dependency).
+- Conteúdo: `go mod init`/`go mod tidy`, `go get`, `go.sum` vs `go.mod`, versionamento semântico de módulos, módulos privados, vendoring, workspaces (`go work`).
+- Contexto/notas: Coberto — README em `go/gerenciamento-de-pacotes/`: go.mod (module path é o próprio caminho de import) vs go.sum (hash de toda a árvore de dependências, diretas e transitivas), go mod tidy derivando dependências direto do código-fonte, gotcha do sufixo `/v2` no import pra major version (permite coexistência de majors no mesmo binário), vendoring, GOPRIVATE, go.work pra multi-módulo local sem precisar publicar versão pra testar.
 
 ### Tópico: Concorrência — goroutines e channels
 - Status: [x]
@@ -70,13 +70,13 @@ Ordem pensada pro cargo de backend: fundamentos → boas práticas de engenharia
 - Status: [x]
 - Dia do plano: —
 - Conteúdo: os 5 princípios aplicados via interfaces pequenas/implícitas, composição.
-- Contexto/notas: Coberto — README em `go/solid-em-go/`: síntese (não repete contexts/common/SOLID.md nem go/config/reference/SOLID.md), como os 5 se combinam num pacote pequeno, erros comuns vindo de Python (embedding como herança falsa, interface grande prematura, DI framework desnecessário).
+- Contexto/notas: Coberto — README em `go/solid-em-go/` regenerado no padrão apostila (zero comparação com outra linguagem, explicação do zero, versão ingênua vs refatorada por princípio): síntese (não repete contexts/common/SOLID.md nem go/config/reference/SOLID.md), como os 5 se combinam num pacote pequeno, erros comuns de quem está começando em Go (embedding como herança falsa, interface grande prematura, DI framework desnecessário).
 
 ### Tópico: DDD em Go
 - Status: [x]
 - Dia do plano: —
 - Conteúdo: entidades, agregados, repositórios, bounded contexts, como isso vira packages em Go.
-- Contexto/notas: Coberto — definição agnóstica promovida pra `contexts/common/DDD.md`, exemplo em `go/config/reference/DDD.md` (e `python/config/reference/DDD.md`). README síntese em `go/ddd-em-go/`: o que Go não dá de graça (sem ORM ativo, sem private forçado), anemic domain model como erro comum vindo de Python, quando não vale aplicar DDD tático completo.
+- Contexto/notas: Coberto — definição agnóstica promovida pra `contexts/common/DDD.md`, exemplo em `go/config/reference/DDD.md` (e `python/config/reference/DDD.md`). README em `go/ddd-em-go/` regenerado no padrão apostila (zero comparação com outra linguagem, explicação do zero, versão anêmica vs modelo rico lado a lado): o que Go não dá de graça (sem ORM ativo, sem private forçado entre tipos do mesmo pacote), modelo de domínio anêmico como erro comum de quem está começando, quando não vale aplicar DDD tático completo.
 
 ### Tópico: Clean Architecture / separação em camadas
 - Status: [x]
@@ -88,7 +88,7 @@ Ordem pensada pro cargo de backend: fundamentos → boas práticas de engenharia
 - Status: [x]
 - Dia do plano: —
 - Conteúdo: nomes, funções, comentários (exceção do godoc), formatação, erro, testes, code smells — aplicação Go dos princípios já em `contexts/common/CLEAN-CODE.md`.
-- Contexto/notas: Coberto — README síntese em `go/clean-code-em-go/`: ferramenta (gofmt/lint) substituindo convenção manual, erro silencioso mais visível em Go que em Python, interseção com SOLID/DDD (função pequena = SRP quase de graça).
+- Contexto/notas: Coberto — README em `go/clean-code-em-go/` regenerado no padrão apostila (zero comparação com outra linguagem, explicação do zero, versão ruim vs idiomática por seção): ferramenta (gofmt/goimports/golangci-lint) substituindo convenção manual, erro ignorado sendo visualmente óbvio no código (`_`) em vez de silencioso, interseção com SOLID/DDD (função pequena = SRP quase de graça).
 
 ## Módulo 3: Backend em Go
 
@@ -132,7 +132,7 @@ Ordem pensada pro cargo de backend: fundamentos → boas práticas de engenharia
 - Status: [x]
 - Dia do plano: —
 - Conteúdo: tipos de erro customizados, handler central de erro, mapear erro de domínio para status HTTP.
-- Contexto/notas: Coberto — README em `go/tratamento-de-erros-e-excecoes-em-apis/`: `writeError` mapeando sentinel error → status, comparação com exception handler do FastAPI, 3 categorias de erro (validação/negócio/infra).
+- Contexto/notas: Coberto — README em `go/tratamento-de-erros-e-excecoes-em-apis/`: `writeError` mapeando sentinel error → status, corpo de erro estruturado (`ErrorResponse`), 3 categorias de erro (validação/negócio/infra).
 
 ### Tópico: Middleware e chain de handlers
 - Status: [x]

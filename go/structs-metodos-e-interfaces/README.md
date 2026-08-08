@@ -1,5 +1,78 @@
 # Structs, métodos e interfaces
 
+## Isso é como Go faz Programação Orientada a Objetos
+
+Uma pergunta natural pra quem chega em Go depois de ouvir falar de Programação Orientada a Objetos (POO): "então, Go tem POO?". Resposta direta: **não, não no sentido clássico**. Go não tem a palavra-chave `class`. Não tem herança de classe. Não tem construtor especial de classe, nem `protected`, nem `super`. Se você está procurando esses conceitos exatos, eles simplesmente não existem na linguagem — e isso não é uma limitação por falta de tempo dos criadores da linguagem, é uma escolha deliberada de design, explicada linha a linha ao longo deste README.
+
+O que Go tem, no lugar de cada peça clássica de POO, é o seguinte — cada um deles é explicado em detalhe mais adiante neste mesmo arquivo, esta seção é só o mapa geral:
+
+| Pilar clássico de POO | O que Go usa no lugar |
+|---|---|
+| Encapsulamento (esconder detalhe interno, expor só o necessário) | Visibilidade decidida pela **primeira letra do nome** (maiúscula = exportado, minúscula = não-exportado) — não existe `private`/`public` como palavra-chave |
+| Abstração (definir um contrato sem se prender à implementação) | **Interface** — mas satisfeita de forma **implícita**: nenhum tipo declara "eu implemento esta interface", o compilador descobre isso sozinho |
+| Herança (um tipo reaproveitar campos/comportamento de outro) | **Não existe.** No lugar, **composição via embedding**: um struct contém outro struct dentro de si, sem hierarquia nenhuma |
+| Polimorfismo (código que trata tipos diferentes de forma uniforme) | Interfaces satisfeitas implicitamente — qualquer tipo com os métodos certos "serve" pra interface, mesmo que tenha sido escrito sem nunca saber que aquela interface existe |
+
+### Encapsulamento, rápido, com exemplo
+
+Encapsulamento é a ideia de esconder o detalhe interno de um tipo, expondo só o que é necessário para quem usa ele de fora. Em Go, isso não é um modificador de acesso que você escolhe por palavra-chave (`private int x`, por exemplo) — é decidido pela primeira letra do próprio nome do identificador:
+
+```go
+package conta
+
+type Conta struct {
+    Titular string  // maiúscula = exportado: visível de fora do pacote conta
+    saldo   float64 // minúscula = não-exportado: só código dentro do pacote conta enxerga este campo
+}
+
+func (c *Conta) Saldo() float64 { // método exportado: forma controlada de ler o saldo de fora
+    return c.saldo
+}
+
+func (c *Conta) Depositar(v float64) {
+    if v > 0 {
+        c.saldo += v
+    }
+}
+```
+
+Quem importa o pacote `conta` consegue ler `c.Titular` direto, e consegue chamar `c.Saldo()` e `c.Depositar(...)` — mas não tem nenhuma forma de escrever `c.saldo = 999999` direto de fora do pacote, porque esse campo nem é visível lá fora. É o compilador que aplica essa regra, não uma convenção que depende de disciplina de quem usa o tipo. Esse mecanismo é explicado com mais profundidade, incluindo pra funções e não só campos de struct, no tópico [Tratamento de erros e pacotes](../tratamento-de-erros-e-pacotes/#visibilidade-a-primeira-letra-decide-o-que-é-público).
+
+### Herança não existe — composição no lugar dela, rápido, com exemplo
+
+Isso é o ponto que mais surpreende quem vem procurando POO clássico: Go **não tem** um jeito de um tipo dizer "eu sou um tipo mais específico de outro tipo, herdo os campos e métodos dele automaticamente, e posso sobrescrever o que quiser". No lugar disso, existe só uma ferramenta: **composição**, através de **embedding** — colocar um struct dentro de outro.
+
+```go
+type Funcionario struct {
+    Nome   string
+    Salario float64
+}
+
+func (f Funcionario) Apresentar() string {
+    return "eu sou " + f.Nome
+}
+
+type Gerente struct {
+    Funcionario     // embedding: Gerente TEM um Funcionario dentro dele — não É UM Funcionario
+    EquipeTamanho int
+}
+
+g := Gerente{
+    Funcionario:   Funcionario{Nome: "Ana", Salario: 8000},
+    EquipeTamanho: 5,
+}
+fmt.Println(g.Nome)         // Ana — campo promovido, acessado direto
+fmt.Println(g.Apresentar()) // eu sou Ana — método promovido, acessado direto
+```
+
+A diferença não é só de vocabulário. Numa hierarquia de herança clássica, é comum acabar com uma cadeia de tipos cada vez mais específicos (`Funcionario` → `Gerente` → `DiretorRegional` → ...), onde mudar um comportamento lá em cima na hierarquia pode ter efeito colateral inesperado em várias "gerações" de tipos abaixo, sem que fique óbvio olhando só o tipo que mudou. Composição evita esse problema estruturalmente: `Gerente` só tem acesso ao que `Funcionario` expõe publicamente, sem nenhum vínculo especial de parentesco — e, se `Gerente` quiser um comportamento diferente para `Apresentar()`, ele simplesmente declara seu próprio método com esse nome (isso esconde o de `Funcionario` quando chamado num `Gerente`, sem nenhum despacho dinâmico por trás). Detalhe completo disso na seção "Composição" mais abaixo neste mesmo arquivo.
+
+"Favoreça composição em vez de herança" é um princípio de design conhecido, discutido em várias linguagens que também têm herança de classe disponível como alternativa — nessas linguagens, é uma escolha de estilo entre duas ferramentas disponíveis. Em Go, não é uma escolha: é a **única** ferramenta que a linguagem oferece para reaproveitar comportamento entre tipos. Isso elimina de vez uma classe inteira de discussão de design ("essa relação deveria ser herança ou composição?") porque só existe uma resposta possível.
+
+### Abstração e polimorfismo — cobertos em detalhe logo abaixo
+
+Os outros dois pilares (abstração via interface, e polimorfismo via satisfação implícita de interface) têm uma seção inteira dedicada mais abaixo neste mesmo README — ver "Interfaces — um contrato de comportamento" — porque são conceitos grandes o suficiente para merecer exemplo próprio, incluindo a conexão direta com Interface Segregation e Dependency Inversion (dois dos princípios SOLID).
+
 ## Struct — um tipo que agrupa vários dados relacionados
 
 Até agora você viu tipos simples: `int`, `string`, `bool`. Mas a maioria dos problemas reais envolve dados que fazem sentido juntos — por exemplo, um pedido de compra tem um identificador, um valor e um status. Você poderia guardar isso em três variáveis soltas, mas aí nada impede que elas se desalinhem (mudar o ID de um pedido sem mudar o valor junto, por engano).
